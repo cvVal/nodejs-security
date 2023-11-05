@@ -93,7 +93,15 @@ app.get('/auth/google/callback',
     }
 );
 
-app.get('/auth/logout', (req, res) => { });
+app.get('/auth/logout', (req, res) => {
+    // Passport removes req.user and clears any logged in session
+    req.logout((err) => {
+        if (err) {
+            next(err);
+        }
+        res.redirect('/');
+    }); 
+ });
 
 app.get('/secret', checkLoggedIn, (req, res) => {
     return res.send('Your personal secret value is 42!');
